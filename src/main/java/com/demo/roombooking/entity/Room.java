@@ -1,7 +1,9 @@
 package com.demo.roombooking.entity;
 
 import com.demo.roombooking.entity.enums.RoomType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "t_room")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Room {
@@ -55,6 +58,7 @@ public class Room {
     @Column(length = 1)
     private int isDel;//删除标志 1删了/0
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Order> orderList = new ArrayList<Order>();
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "room", fetch = FetchType.LAZY)
+    private List<Order> orderList= new ArrayList<>();
 }
