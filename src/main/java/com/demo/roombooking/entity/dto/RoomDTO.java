@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Column;
 import javax.sql.rowset.Predicate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,20 +18,18 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class RoomDTO {
-
-    private Long id;
     /**
-     *房间号
-     **/
+    * 房间号
+    **/
     private String roomNo;
     /**
      *价格
      **/
     private Double price;
     /**
-     * 床的数量
+     * 可入住的人的数量
      */
-    private int bed;
+    private int people;
     /**
      * 客房名称
      */
@@ -40,13 +39,18 @@ public class RoomDTO {
      */
     private RoomType type;
     /**
+     * 房间照片(多张用分号隔开)
+     **/
+    private List<String> roomImgUrl;
+
+    /**
+     * 房间介绍
+     * */
+    private String introduction;
+    /**
      *房间是否为空
      */
     private int state;//0为空，1非空
-    /**
-     * 删除标志
-     */
-    private int isDel;//删除标志 1删了/0
 
 
 }

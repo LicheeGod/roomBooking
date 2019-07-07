@@ -34,15 +34,28 @@ public class Room {
     **/
     private Double price;
     /**
-     * 床的数量
+     * 可入住的人的数量
      */
-    @Column(length = 1)
-    private int bed;
+    @Column(length = 2)
+    private int people;
     /**
      * 客房名称
      */
     @Column(length = 20)
-    private String name;//
+    private String name;
+
+    /**
+     * 房间照片(多张用分号隔开)
+     **/
+    @Lob
+    @Column
+    private List<String> roomImgUrl;
+
+    /**
+     * 客房介绍
+     * */
+    private String introduction;
+
     /**
     *房间类型
     */
@@ -61,4 +74,6 @@ public class Room {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "room", fetch = FetchType.LAZY)
     private List<Order> orderList= new ArrayList<>();
+
+
 }
