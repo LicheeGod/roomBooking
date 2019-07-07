@@ -1,13 +1,13 @@
 package com.demo.roombooking.entity;
 
 import com.demo.roombooking.entity.enums.Sex;
-import com.demo.roombooking.entity.enums.UserState;
+import com.demo.roombooking.entity.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,19 +86,28 @@ public class User {
     /**
      * 认证状态[实名/未实名/黑名单]
      */
-    private UserState state;
+    @Enumerated(EnumType.STRING)
+    private UserStatus state;
     /**
      * 注册时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date registerTime;
     /**
      * 上次登陆时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
     @OneToOne(fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     private Privilege privilege;
+    /**
+     * 关联订单
+     */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Order> orders;
 
     public User(String userName, String password, Boolean isVip, String nickName, Privilege privilege) {
         this.userName = userName;
@@ -118,7 +127,7 @@ public class User {
         if (this.isVip == null) {
             this.setIsVip(false);
         }
-        this.setState(UserState.NOTPASS_VERIFIED);
+        this.setState(UserStatus.NOTPASS_VERIFIED);
         this.setRegisterTime(new Date());
     }
 
@@ -127,12 +136,6 @@ public class User {
         this.setUpdateTime(new Date());
     }
 
-    /**
-     * 关联订单
-     */
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Order> orderList= new ArrayList<Order>();
 
 
 }

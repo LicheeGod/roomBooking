@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,61 +18,59 @@ import java.util.List;
 @NoArgsConstructor
 public class Room {
     /**
-     *主键
+     * 主键
      **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-    *房间号
+    * 房间号
     **/
-    @Column(length = 6)
+    @Column(length = 20)
     private String roomNo;
     /**
-    *价格
+    * 价格/晚
     **/
-    private Double price;
+    private String price;
     /**
-     * 可入住的人的数量
+     * 可入住的人的最大数量
      */
-    @Column(length = 2)
-    private int people;
+    @Column(length = 5)
+    private Integer people;
     /**
      * 客房名称
      */
     @Column(length = 20)
     private String name;
-
     /**
      * 房间照片(多张用分号隔开)
      **/
     @Lob
-    @Column
     private List<String> roomImgUrl;
-
     /**
      * 客房介绍
      * */
+    @Column(length = 50)
     private String introduction;
-
     /**
-    *房间类型
+    * 房间类型
     */
     @Enumerated(EnumType.STRING)
     private RoomType type;
     /**
-     *房间是否为空
-     */
-    private int state;//0为空，1非空
-    /**
-     * 删除标志
+     * 屏蔽标志
      */
     @Column(length = 1)
-    private int isDel;//删除标志 1删了/0
-
+    private Boolean isHide;
+    /**
+     * 订单关联
+     */
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "room", fetch = FetchType.LAZY)
-    private List<Order> orderList= new ArrayList<>();
+    @ManyToMany(mappedBy = "rooms", targetEntity = Order.class)
+    private List<Order> orders;
 
-
+    @PrePersist
+    private void prePersist() {
+        this.isHide = false;
+    }
 }

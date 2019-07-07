@@ -3,7 +3,7 @@ package com.demo.roombooking.entity.dto;
 import com.demo.roombooking.common.util.PageableBuilder;
 import com.demo.roombooking.entity.User;
 import com.demo.roombooking.entity.enums.Sex;
-import com.demo.roombooking.entity.enums.UserState;
+import com.demo.roombooking.entity.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -55,7 +55,7 @@ public class UserQueryDTO {
     /**
      * 认证状态[实名/未实名/黑名单]
      */
-    private UserState state;
+    private UserStatus state;
     /**
      * 注册时间段
      */
@@ -89,7 +89,7 @@ public class UserQueryDTO {
             }
             // 按状态查询用户时，若状态值为空，则排除被删除[屏蔽]的用户
             if (StringUtils.isEmpty(this.getState())) {
-                predicates.add(criteriaBuilder.notEqual(root.get("state"), UserState.HAS_DELETE));
+                predicates.add(criteriaBuilder.notEqual(root.get("state"), UserStatus.HAS_DELETE));
             } else {
                 predicates.add(criteriaBuilder.equal(root.get("state"), this.getState()));
             }

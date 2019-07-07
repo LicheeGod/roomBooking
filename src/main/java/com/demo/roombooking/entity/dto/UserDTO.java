@@ -1,7 +1,7 @@
 package com.demo.roombooking.entity.dto;
 
 import com.demo.roombooking.entity.enums.Sex;
-import com.demo.roombooking.entity.enums.UserState;
+import com.demo.roombooking.entity.enums.UserStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -74,7 +74,7 @@ public class UserDTO {
     /**
      * 认证状态[屏蔽/实名/未实名/黑名单]
      */
-    private UserState state;
+    private UserStatus state;
     /**
      * 注册时间
      */

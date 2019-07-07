@@ -1,19 +1,15 @@
 package com.demo.roombooking.service.Impl;
 
 
-import com.demo.roombooking.common.exception.BusinessException;
 import com.demo.roombooking.common.resp.JsonResponse;
-import com.demo.roombooking.common.util.Token;
 import com.demo.roombooking.dao.UserRepository;
 import com.demo.roombooking.entity.User;
 import com.demo.roombooking.entity.dto.UserQueryDTO;
-import com.demo.roombooking.entity.enums.UserState;
+import com.demo.roombooking.entity.enums.UserStatus;
 import com.demo.roombooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String userName, String password) {
 
-        User user = userRepository.findByUserName(userName);
+        User user = userRepository.findByUserName(userName).get();
 
         if (user.getPassword().equals(password)) {
 
@@ -54,15 +50,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public JsonResponse insertUser(User user) {
 
-        User checkUser = userRepository.findByUserName(user.getUserName());
+        User checkUser = userRepository.findByUserName(user.getUserName()).get();
 
-        if (checkUser != null) {
-            return new JsonResponse(JsonResponse.FAILURE, "当前用户已存在");
-        }
+        return new JsonResponse(JsonResponse.FAILURE, "当前用户已存在");
 
         // 默认初始化的信息有: 昵称、头像、性别、非会员、认证状态
 
-        return new JsonResponse(JsonResponse.SUCCESS, userRepository.saveAndFlush(user));
     }
 
     /**
@@ -72,11 +65,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User user) {
 
-        User checkUser = userRepository.findByUserName(user.getUserName());
-
-        if (checkUser == null) {
-            throw  new BusinessException("当前用户不存在");
-        }
+        User checkUser = userRepository.findByUserName(user.getUserName()).get();
 
         user.setId(checkUser.getId());
         user.setUserName(checkUser.getUserName());
@@ -96,11 +85,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updatePassword(String userName, String oldPassword, String newPassword) {
 
-        User checkUser = userRepository.findByUserName(userName);
-
-        if (checkUser == null) {
-            throw  new BusinessException("当前用户不存在");
-        }
+        User checkUser = userRepository.findByUserName(userName).get();
 
         if (oldPassword.equals(checkUser.getPassword())) {
             checkUser.setPassword(newPassword);
@@ -116,11 +101,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User verifiedUser(User user) {
 
-        User checkUser = userRepository.findByUserName(user.getUserName());
-
-        if (checkUser == null) {
-            throw  new BusinessException("当前用户不存在");
-        }
+        User checkUser = userRepository.findByUserName(user.getUserName()).get();
 
         // todo 实名认证！！！！
         checkUser.setRealName(user.getRealName());
@@ -136,13 +117,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String userName) {
 
-        User checkUser = userRepository.findByUserName(userName);
+        User checkUser = userRepository.findByUserName(userName).get();
 
-        if (checkUser == null) {
-            throw  new BusinessException("当前用户( " + userName + " )不存在");
-        }
-
-        checkUser.setState(UserState.HAS_DELETE);
+        checkUser.setState(UserStatus.HAS_DELETE);
 
         userRepository.saveAndFlush(checkUser);
     }

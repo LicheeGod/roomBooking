@@ -1,19 +1,24 @@
 package com.demo.roombooking.service.Impl;
 
 
-import com.demo.roombooking.common.exception.BusinessException;
 import com.demo.roombooking.common.resp.JsonResponse;
 import com.demo.roombooking.dao.OrderRepository;
 import com.demo.roombooking.dao.RoomRepository;
 import com.demo.roombooking.dao.UserRepository;
 import com.demo.roombooking.entity.Order;
 import com.demo.roombooking.entity.Room;
-import com.demo.roombooking.entity.User;
+import com.demo.roombooking.entity.dto.OrderDTO;
 import com.demo.roombooking.entity.dto.OrderQueryDTO;
+import com.demo.roombooking.entity.enums.OrderStatus;
 import com.demo.roombooking.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -43,33 +48,58 @@ public class OrderServiceImpl implements OrderService {
      * 添加订单
      */
     @Override
-    public JsonResponse insertOrder(Order order) {
-        User user=userRepository.findByUserName(order.getUser().getUserName());
-        order.setUser(user);
-        Room room = roomRepository.getOne(order.getRoom().getId());
-        order.setRoom(room);
+    public JsonResponse insertOrder(OrderDTO orderDTO) throws ParseException {
+
+        Order order = new Order();
+
+        // 设置经手人
+        userRepository.findByUserName(orderDTO.getManagerName()).ifPresent(manager -> order.setManagerId(manager.getId()));
+        // 预订房间号
+        List<Room> rooms = new ArrayList<>();
+        orderDTO.getRoomNos().forEach(roomNo -> roomRepository.findRoomByRoomNo(roomNo).ifPresent(rooms::add));
+        order.setRooms(rooms);
+        // 下单用户
+        userRepository.findByUserName(orderDTO.getUserName()).ifPresent(order::setUser);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        // 预定入住时间、预定退房时间、备注
+        order.setCheckInTime(simpleDateFormat.parse(orderDTO.getCheckInTime()));
+        order.setCheckOutTime(simpleDateFormat.parse(orderDTO.getCheckOutTime()));
+        order.setRemark(orderDTO.getRemark());
+
         return new JsonResponse(JsonResponse.SUCCESS, orderRepository.saveAndFlush(order));
     }
 
     /**
-     * 修改基本信息
-     * 订单能修改的基本信息有: 经手人ID、状态、评价、备注
+     * 订单回复
+     * @param code
+     * @param rate
+     * @param remark
+     * @return
      */
     @Override
-    public Order updateOrder(Order order) {
+    public Boolean operateRate(String code, Integer rate, String remark) {
 
-        Order checkOrder = orderRepository.getOne(order.getId());
+        orderRepository.findOrderByCode(code).ifPresent(order -> {
+            order.setRate(rate);
+            order.setRemark(remark);
+        });
 
-        if (checkOrder == null) {
-            throw new BusinessException("该订单不存在");
-        }
+        return true;
+    }
 
-        checkOrder.setManagerId(order.getManagerId());
-        checkOrder.setState(order.getState());
-        checkOrder.setRate(order.getRate());
-        checkOrder.setRemark(order.getRemark());
-
-        return orderRepository.saveAndFlush(checkOrder);
+    /**
+     * 订单状态操作
+     * @param code
+     * @param status
+     */
+    @Override
+    public void operateOrder(String code, OrderStatus status) {
+        orderRepository.findOrderByCode(code).ifPresent(order -> {
+            order.setStatus(status);
+            orderRepository.saveAndFlush(order);
+        });
     }
 
     /**

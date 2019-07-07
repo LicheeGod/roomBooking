@@ -2,9 +2,6 @@ package com.demo.roombooking.entity.dto;
 
 import com.demo.roombooking.common.util.PageableBuilder;
 import com.demo.roombooking.entity.Order;
-import com.demo.roombooking.entity.User;
-import com.demo.roombooking.entity.enums.Sex;
-import com.demo.roombooking.entity.enums.UserState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -18,7 +15,6 @@ import javax.persistence.criteria.Predicate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Data

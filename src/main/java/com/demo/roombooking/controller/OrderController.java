@@ -7,23 +7,22 @@ import com.demo.roombooking.entity.Room;
 import com.demo.roombooking.entity.User;
 import com.demo.roombooking.entity.dto.OrderDTO;
 import com.demo.roombooking.entity.dto.OrderQueryDTO;
-import com.demo.roombooking.service.Impl.OrderServiceImpl;
+import com.demo.roombooking.entity.enums.OrderStatus;
+import com.demo.roombooking.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+import java.text.ParseException;
+
 @RestController
 @Transactional
 public class OrderController {
 
-    private OrderServiceImpl orderService;
+    private OrderService orderService;
 
     @Autowired
-    private void setOrderService(OrderServiceImpl orderService) {
+    private void setOrderService(OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -34,37 +33,39 @@ public class OrderController {
      * @return JsonResponse
      */
     @RequestMapping("/order/insert")
-    public JsonResponse insertOrder(@RequestBody OrderDTO orderDTO,@RequestParam("userName") String userName) {
-        User user=new User();
-        user.setUserName(userName);
-        Room room = new Room();
-        room.setId(orderDTO.getRoomId());
-        return orderService.insertOrder(Order.builder()
-                .user(user)
-                .managerId(orderDTO.getManagerId())
-                .checkInTime(orderDTO.getCheckInTime())
-                .checkOutTime(orderDTO.getCheckOutTime())
-                .state(orderDTO.getState())
-                .remark(orderDTO.getRemark())
-                .room(room).build());
+    public JsonResponse insertOrder(@RequestBody OrderDTO orderDTO) throws ParseException {
+
+        return new JsonResponse(JsonResponse.SUCCESS, orderService.insertOrder(orderDTO));
+
     }
 
     /**
-     * 修改订单基本信息
-     *
-     * @param orderDTO 订单基本信息
-     * @return JsonResponse
+     * 订单星级等回复
+     * @param code
+     * @param rate
+     * @param remark
+     * @return
      */
     @RequestMapping("/order/updateInfo")
-    public JsonResponse updateOrder(@RequestBody OrderDTO orderDTO) {
-        return new JsonResponse(JsonResponse.SUCCESS,
-                orderService.updateOrder(
-                        Order.builder()
-                                .id(orderDTO.getId())
-                                .managerId(orderDTO.getManagerId())
-                                .state(orderDTO.getState())
-                                .rate(orderDTO.getRate())
-                                .remark(orderDTO.getRemark()).build()));
+    public JsonResponse updateOrder(@RequestParam("code") String code,
+                                    @RequestParam("rate") Integer rate,
+                                    @RequestParam("remark") String remark) {
+        return new JsonResponse(JsonResponse.SUCCESS, orderService.operateRate(code, rate, remark));
+    }
+
+    /**
+     * 修改订单状态
+     * @param code
+     * @param status
+     * @return
+     */
+    @RequestMapping("/order/operate")
+    public JsonResponse operateOrder(@RequestParam("code") String code,
+                                     @RequestParam("status") String status) {
+
+        orderService.operateOrder(code, OrderStatus.valueOf(status));
+
+        return new JsonResponse(JsonResponse.SUCCESS);
     }
 
     /**
