@@ -3,6 +3,7 @@ package com.demo.roombooking.service.Impl;
 
 import com.demo.roombooking.common.exception.BusinessException;
 import com.demo.roombooking.common.resp.JsonResponse;
+import com.demo.roombooking.common.util.Token;
 import com.demo.roombooking.dao.UserRepository;
 import com.demo.roombooking.entity.User;
 import com.demo.roombooking.entity.dto.UserQueryDTO;
@@ -12,14 +13,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public class UserServiceImpl implements UserService {
+
+//    private HashMap<String, String> storage = new HashMap<>();
 
     private UserRepository userRepository;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public User login(String userName, String password) {
+
+        User user = userRepository.findByUserName(userName);
+
+        if (user.getPassword().equals(password)) {
+
+            // 模拟token令牌
+//            storage.put(userName, Token.getToken());
+
+            return user;
+        }
+
+        return null;
+    }
+
+    @Override
+    public void exit(String userName) {
+//        storage.remove(userName);
     }
 
     /**

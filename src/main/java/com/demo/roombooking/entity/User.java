@@ -4,10 +4,7 @@ import com.demo.roombooking.entity.enums.Sex;
 import com.demo.roombooking.entity.enums.UserState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -99,12 +96,28 @@ public class User {
      */
     private Date updateTime;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @EqualsAndHashCode.Exclude
+    private Privilege privilege;
+
+    public User(String userName, String password, Boolean isVip, String nickName, Privilege privilege) {
+        this.userName = userName;
+        this.password = password;
+        this.isVip = isVip;
+        this.nickName = nickName;
+        this.privilege = privilege;
+    }
+
     @PrePersist
     private void perPersist() {
-        this.setNickName("游客");
+        if (this.nickName == null) {
+            this.setNickName("游客");
+        }
         this.setUserImg("/");
         this.setGender(Sex.HIDE);
-        this.setIsVip(false);
+        if (this.isVip == null) {
+            this.setIsVip(false);
+        }
         this.setState(UserState.NOTPASS_VERIFIED);
         this.setRegisterTime(new Date());
     }

@@ -24,6 +24,28 @@ public class UserController {
     }
 
     /**
+     * 登录
+     * @param userName 用户名
+     * @param password 密码
+     * @return JsonResponse
+     */
+    @RequestMapping("/user/login")
+    public JsonResponse login(@RequestParam("userName") String userName,
+                              @RequestParam("password") String password) {
+        return new JsonResponse(JsonResponse.SUCCESS, userService.login(userName, password));
+    }
+
+    /**
+     * 注销
+     * @param userName
+     * @return
+     */
+    public JsonResponse exit(@RequestParam("userName") String userName) {
+        userService.exit(userName);
+        return new JsonResponse(JsonResponse.SUCCESS);
+    }
+
+    /**
      * 添加用户
      * @param userDTO 用户基本信息
      * @return JsonResponse

@@ -10,6 +10,21 @@ import org.springframework.data.domain.Page;
 public interface UserService {
 
     /**
+     * 登录
+     * @param userName 用户名
+     * @param password 密码
+     * @return User
+     */
+    User login(String userName, String password);
+
+    /**
+     * 注销
+     * @param userName 用户名
+     * @return Boolean
+     */
+    void exit(String userName);
+
+    /**
      * 添加用户
      * @param user 用户信息
      * @return JsonResponse
