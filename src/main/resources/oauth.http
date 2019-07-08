@@ -27,12 +27,12 @@ Content-Type: application/json
 }
 
 ###屏蔽/停用客房
-POST http://localhost:8800/roombooking/room/hide
+POST http://localhost:8800/roombooking/room/hide?roomNo=202
 Content-Type: application/json
 
-{
-  "roomNo": "201"
-}
+###屏蔽/停用客房
+POST http://localhost:8800/roombooking/room/getOne?roomNo=201
+Content-Type: application/json
 
 ###查询客房
 POST http://localhost:8800/roombooking/room/get
@@ -50,26 +50,69 @@ Content-Type: application/json
   }
 }
 
+######################################################################
+
 ###添加用户
 POST http://localhost:8800/roombooking/user/insert
 Content-Type: application/json
 
 {
-
+  "userName": "user",
+  "password": "123456",
+  "email": "user@163.com"
 }
+
+###用户登陆
+POST http://localhost:8800/roombooking/user/login?userName=user&password=123456
+Content-Type: application/json
+
+###注销
+POST http://localhost:8800/roombooking/user/exit?userName=user
+Content-Type: application/json
 
 ###修改用户信息
-POST http://localhost:8800/roombooking/user/insert
+POST http://localhost:8800/roombooking/user/updateInfo
 Content-Type: application/json
 
 {
-
+  "userName": "user",
+  "nickName": "测试猿",
+  "userImg": "sz.jpg",
+  "realName": "普通用户",
+  "email": "user@163.com",
+  "phone": "13712345678",
+  "gender": "MALE",
+  "birthday": "2000-01-01",
+  "address": "东莞理工学院"
 }
 
-###删除用户
-POST http://localhost:8800/roombooking/user/insert
+###修改密码
+POST http://localhost:8800/roombooking/user/updatePassword?userName=user&password=123456&newPassword=123123
+Content-Type: application/json
+
+###屏蔽用户
+POST http://localhost:8800/roombooking/user/delete?userName=user
+Content-Type: application/json
+
+
+###分页查询用户
+POST http://localhost:8800/roombooking/user/get
 Content-Type: application/json
 
 {
-
+  "userName": "",
+  "nickName": "",
+  "realName": "",
+  "phone": "",
+  "gender": "",
+  "isVip": "",
+  "idCard": "",
+  "state": "",
+  "registerTimes": [""],
+  "pageBuilder": {
+    "pageNum": "1",
+    "pageSize": "10"
+  }
 }
+
+######################################################################

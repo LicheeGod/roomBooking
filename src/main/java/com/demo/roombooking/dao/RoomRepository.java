@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long>, JpaSpecificationExecutor<Room> {
 
-    Optional<Room> findRoomByRoomNo(String roomNo);
+    Optional<Room> findByRoomNo(String roomNo);
 
 }

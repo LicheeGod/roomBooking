@@ -7,10 +7,7 @@ import com.demo.roombooking.entity.dto.RoomQueryDTO;
 import com.demo.roombooking.entity.enums.RoomType;
 import com.demo.roombooking.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/room")
@@ -64,10 +61,20 @@ public class RoomController {
      * @param roomNo
      * @return
      */
-    @PostMapping("/hide")
-    public JsonResponse hideRoom(@RequestBody String roomNo) {
+    @RequestMapping("/hide")
+    public JsonResponse hideRoom(@RequestParam("roomNo") String roomNo) {
         roomService.hideRoom(roomNo);
         return new JsonResponse(JsonResponse.SUCCESS);
+    }
+
+    /**
+     * 根据房间号获取房间信息
+     * @param roomNo
+     * @return
+     */
+    @RequestMapping("/getOne")
+    public JsonResponse getRoom(@RequestParam("roomNo") String roomNo) {
+        return new JsonResponse(JsonResponse.SUCCESS, roomService.getRoomByRoomNo(roomNo));
     }
 
     /**

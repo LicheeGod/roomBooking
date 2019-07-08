@@ -8,10 +8,7 @@ import com.demo.roombooking.entity.dto.UserQueryDTO;
 import com.demo.roombooking.entity.enums.Sex;
 import com.demo.roombooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @RestController
@@ -30,9 +27,8 @@ public class UserController {
      * @param password 密码
      * @return JsonResponse
      */
-    @RequestMapping("/user/login")
-    public JsonResponse login(@RequestParam("userName") String userName,
-                              @RequestParam("password") String password) {
+    @PostMapping("/user/login")
+    public JsonResponse login(@RequestParam("userName") String userName, @RequestParam("password") String password) {
         return new JsonResponse(JsonResponse.SUCCESS, userService.login(userName, password));
     }
 
@@ -41,6 +37,7 @@ public class UserController {
      * @param userName
      * @return
      */
+    @RequestMapping("/user/exit")
     public JsonResponse exit(@RequestParam("userName") String userName) {
         userService.exit(userName);
         return new JsonResponse(JsonResponse.SUCCESS);
@@ -69,8 +66,10 @@ public class UserController {
         return new JsonResponse(JsonResponse.SUCCESS,
                 userService.updateUser(
                         User.builder()
+                                .userName(userDTO.getUserName())
                                 .nickName(userDTO.getNickName())
                                 .userImg(userDTO.getUserImg())
+                                .realName(userDTO.getRealName())
                                 .email(userDTO.getEmail())
                                 .phone(userDTO.getPhone())
                                 .gender(Sex.valueOf(userDTO.getGender()))

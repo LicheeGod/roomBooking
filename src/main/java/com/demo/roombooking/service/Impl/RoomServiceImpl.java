@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
 public class RoomServiceImpl implements RoomService{
 
@@ -44,7 +41,7 @@ public class RoomServiceImpl implements RoomService{
             return new JsonResponse(JsonResponse.FAILURE, "房间不存在");
         }
 
-        Room room = roomRepository.findRoomByRoomNo(roomDTO.getRoomNo()).get();
+        Room room = roomRepository.findByRoomNo(roomDTO.getRoomNo()).get();
 
         room.setPrice(roomDTO.getPrice());
         room.setPeople(roomDTO.getPeople());
@@ -61,20 +58,16 @@ public class RoomServiceImpl implements RoomService{
     @Override
     public void hideRoom(String roomNo) {
 
-        Map<String, Boolean> m = new HashMap<>();
-        roomRepository.findRoomByRoomNo(roomNo).ifPresent(room -> {
-//            boolean ishide = room.getIsHide();
-//            room.setIsHide(!ishide);
-            if (room.getIsHide()) {
-                room.setIsHide(false);
-            } else {
-                room.setIsHide(true);
-            }
-            m.put("hide", room.getIsHide());
+        roomRepository.findByRoomNo(roomNo).ifPresent(room -> {
+            room.setIsHide(!room.getIsHide());
             roomRepository.saveAndFlush(room);
         });
 
-        System.out.println();
+    }
+
+    @Override
+    public Room getRoomByRoomNo(String roomNo) {
+        return roomRepository.findByRoomNo(roomNo).get();
     }
 
     @Override
@@ -83,6 +76,6 @@ public class RoomServiceImpl implements RoomService{
     }
 
     private Boolean hasRoom(String roomNo) {
-        return roomRepository.findRoomByRoomNo(roomNo).isPresent();
+        return roomRepository.findByRoomNo(roomNo).isPresent();
     }
 }

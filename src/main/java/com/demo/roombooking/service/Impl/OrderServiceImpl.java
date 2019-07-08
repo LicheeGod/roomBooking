@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
         userRepository.findByUserName(orderDTO.getManagerName()).ifPresent(manager -> order.setManagerId(manager.getId()));
         // 预订房间号
         List<Room> rooms = new ArrayList<>();
-        orderDTO.getRoomNos().forEach(roomNo -> roomRepository.findRoomByRoomNo(roomNo).ifPresent(rooms::add));
+        orderDTO.getRoomNos().forEach(roomNo -> roomRepository.findByRoomNo(roomNo).ifPresent(rooms::add));
         order.setRooms(rooms);
         // 下单用户
         userRepository.findByUserName(orderDTO.getUserName()).ifPresent(order::setUser);

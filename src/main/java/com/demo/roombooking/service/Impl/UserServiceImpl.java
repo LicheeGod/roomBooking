@@ -2,9 +2,11 @@ package com.demo.roombooking.service.Impl;
 
 
 import com.demo.roombooking.common.resp.JsonResponse;
+import com.demo.roombooking.dao.PrivilegeRepository;
 import com.demo.roombooking.dao.UserRepository;
 import com.demo.roombooking.entity.User;
 import com.demo.roombooking.entity.dto.UserQueryDTO;
+import com.demo.roombooking.entity.enums.Sex;
 import com.demo.roombooking.entity.enums.UserStatus;
 import com.demo.roombooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,13 @@ public class UserServiceImpl implements UserService {
 
 //    private HashMap<String, String> storage = new HashMap<>();
 
+    private PrivilegeRepository privilegeRepository;
     private UserRepository userRepository;
+
+    @Autowired
+    public void setPrivilegeRepository(PrivilegeRepository privilegeRepository) {
+        this.privilegeRepository = privilegeRepository;
+    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -50,12 +58,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public JsonResponse insertUser(User user) {
 
-        User checkUser = userRepository.findByUserName(user.getUserName()).get();
+        if (userRepository.findByUserName(user.getUserName()).isPresent()) {
+            return new JsonResponse(JsonResponse.FAILURE, "用户已存在");
+        }
 
-        return new JsonResponse(JsonResponse.FAILURE, "当前用户已存在");
+        user.setPrivilege(privilegeRepository.findByName("USER"));
 
-        // 默认初始化的信息有: 昵称、头像、性别、非会员、认证状态
+        userRepository.save(user);
 
+        // 默认已初始化的信息有: 昵称、头像、性别、非会员、认证状态
+
+        return new JsonResponse(JsonResponse.SUCCESS);
     }
 
     /**
@@ -67,16 +80,23 @@ public class UserServiceImpl implements UserService {
 
         User checkUser = userRepository.findByUserName(user.getUserName()).get();
 
-        user.setId(checkUser.getId());
-        user.setUserName(checkUser.getUserName());
-        user.setPassword(checkUser.getPassword());
-        user.setRealName(checkUser.getRealName());
-        user.setIsVip(checkUser.getIsVip());
-        user.setIdCard(checkUser.getIdCard());
-        user.setIdCardImg(checkUser.getIdCardImg());
-        user.setState(checkUser.getState());
+//        checkUser.setId(checkUser.getId());
+//        checkUser.setUserName(checkUser.getUserName());
+//        checkUser.setPassword(checkUser.getPassword());
+        checkUser.setNickName(user.getNickName());
+        checkUser.setRealName(user.getRealName());
+//        checkUser.setIsVip(checkUser.getIsVip());
+//        checkUser.setIdCard(checkUser.getIdCard());
+//        checkUser.setIdCardImg(checkUser.getIdCardImg());
+//        checkUser.setState(checkUser.getState());
+        checkUser.setUserImg(user.getUserImg());
+        checkUser.setEmail(user.getEmail());
+        checkUser.setPhone(user.getPhone());
+        checkUser.setGender(user.getGender());
+        checkUser.setBirthday(user.getBirthday());
+        checkUser.setAddress(user.getAddress());
 
-        return userRepository.saveAndFlush(user);
+        return userRepository.saveAndFlush(checkUser);
     }
 
     /**

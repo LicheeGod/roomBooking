@@ -3,10 +3,7 @@ package com.demo.roombooking.entity;
 import com.demo.roombooking.common.util.StringListConverter;
 import com.demo.roombooking.entity.enums.RoomType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,7 +24,7 @@ public class Room {
     /**
     * 房间号
     **/
-    @Column(length = 20)
+    @Column(name = "room_no", length = 20)
     private String roomNo;
     /**
     * 价格/晚
@@ -67,6 +64,7 @@ public class Room {
      * 订单关联
      */
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "rooms", targetEntity = Order.class)
     private List<Order> orders;
 

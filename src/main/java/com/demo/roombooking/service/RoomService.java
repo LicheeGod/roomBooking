@@ -27,6 +27,13 @@ public interface RoomService {
     void hideRoom(String roomNo);
 
     /**
+     * 根据房间号获取房间信息
+     * @param roomNo
+     * @return
+     */
+    Room getRoomByRoomNo(String roomNo);
+
+    /**
      * 查询动态客房
      * @param roomQueryDTO
      * @return
