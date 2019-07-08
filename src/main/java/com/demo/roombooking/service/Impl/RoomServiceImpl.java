@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class RoomServiceImpl implements RoomService{
 
@@ -58,11 +61,20 @@ public class RoomServiceImpl implements RoomService{
     @Override
     public void hideRoom(String roomNo) {
 
+        Map<String, Boolean> m = new HashMap<>();
         roomRepository.findRoomByRoomNo(roomNo).ifPresent(room -> {
-            room.setIsHide(!room.getIsHide());
+//            boolean ishide = room.getIsHide();
+//            room.setIsHide(!ishide);
+            if (room.getIsHide()) {
+                room.setIsHide(false);
+            } else {
+                room.setIsHide(true);
+            }
+            m.put("hide", room.getIsHide());
             roomRepository.saveAndFlush(room);
         });
 
+        System.out.println();
     }
 
     @Override

@@ -1,0 +1,75 @@
+###添加客房
+POST http://localhost:8800/roombooking/room/insert
+Content-Type: application/json
+
+{
+  "roomNo": "201",
+  "price": "49",
+  "people": "2",
+  "name": "情趣双人房",
+  "roomImgUrl": ["sz.jpg"],
+  "introduction": "没有介绍",
+  "type": "DOUBLE"
+}
+
+###修改客房
+POST http://localhost:8800/roombooking/room/update
+Content-Type: application/json
+
+{
+  "roomNo": "201",
+  "price": "50",
+  "people": "2",
+  "name": "豪华双人房",
+  "roomImgUrl": ["sz.jpg"],
+  "introduction": "没有介绍",
+  "type": "DOUBLE"
+}
+
+###屏蔽/停用客房
+POST http://localhost:8800/roombooking/room/hide
+Content-Type: application/json
+
+{
+  "roomNo": "201"
+}
+
+###查询客房
+POST http://localhost:8800/roombooking/room/get
+Content-Type: application/json
+
+{
+  "roomNo": "",
+  "prices": [""],
+  "peoples": [""],
+  "name": "",
+  "type": "",
+  "pageBuilder": {
+    "pageNum": "1",
+    "pageSize": "10"
+  }
+}
+
+###添加用户
+POST http://localhost:8800/roombooking/user/insert
+Content-Type: application/json
+
+{
+
+}
+
+###修改用户信息
+POST http://localhost:8800/roombooking/user/insert
+Content-Type: application/json
+
+{
+
+}
+
+###删除用户
+POST http://localhost:8800/roombooking/user/insert
+Content-Type: application/json
+
+{
+
+}
