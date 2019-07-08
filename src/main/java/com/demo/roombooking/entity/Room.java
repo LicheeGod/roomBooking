@@ -1,5 +1,6 @@
 package com.demo.roombooking.entity;
 
+import com.demo.roombooking.common.util.StringListConverter;
 import com.demo.roombooking.entity.enums.RoomType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -45,7 +46,7 @@ public class Room {
     /**
      * 房间照片(多张用分号隔开)
      **/
-    @Lob
+    @Convert(converter = StringListConverter.class)
     private List<String> roomImgUrl;
     /**
      * 客房介绍

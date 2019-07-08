@@ -43,7 +43,7 @@ public class UserQueryDTO {
     /**
      * 性别
      */
-    private Sex gender;
+    private String gender;
     /**
      * 是否会员
      */
@@ -55,7 +55,7 @@ public class UserQueryDTO {
     /**
      * 认证状态[实名/未实名/黑名单]
      */
-    private UserStatus state;
+    private String state;
     /**
      * 注册时间段
      */
@@ -79,7 +79,7 @@ public class UserQueryDTO {
                 predicates.add(criteriaBuilder.equal(root.get("phone"), this.getPhone()));
             }
             if (!StringUtils.isEmpty(this.getGender())) {
-                predicates.add(criteriaBuilder.equal(root.get("gender"), this.getGender()));
+                predicates.add(criteriaBuilder.equal(root.get("gender"), Sex.valueOf(this.getGender())));
             }
             if (!StringUtils.isEmpty(this.getIsVip())) {
                 predicates.add(criteriaBuilder.equal(root.get("isVip"), this.getIsVip()));
@@ -91,7 +91,7 @@ public class UserQueryDTO {
             if (StringUtils.isEmpty(this.getState())) {
                 predicates.add(criteriaBuilder.notEqual(root.get("state"), UserStatus.HAS_DELETE));
             } else {
-                predicates.add(criteriaBuilder.equal(root.get("state"), this.getState()));
+                predicates.add(criteriaBuilder.equal(root.get("state"), UserStatus.valueOf(this.getState())));
             }
             if (!StringUtils.isEmpty(this.getRegisterTimes().get(0)) && !StringUtils.isEmpty(this.getRegisterTimes().get(1))) {
                 try {

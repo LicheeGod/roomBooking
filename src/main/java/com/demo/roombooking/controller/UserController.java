@@ -5,6 +5,7 @@ import com.demo.roombooking.common.resp.JsonResponse;
 import com.demo.roombooking.entity.User;
 import com.demo.roombooking.entity.dto.UserDTO;
 import com.demo.roombooking.entity.dto.UserQueryDTO;
+import com.demo.roombooking.entity.enums.Sex;
 import com.demo.roombooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,7 +73,7 @@ public class UserController {
                                 .userImg(userDTO.getUserImg())
                                 .email(userDTO.getEmail())
                                 .phone(userDTO.getPhone())
-                                .gender(userDTO.getGender())
+                                .gender(Sex.valueOf(userDTO.getGender()))
                                 .birthday(userDTO.getBirthday())
                                 .address(userDTO.getAddress()).build()));
     }

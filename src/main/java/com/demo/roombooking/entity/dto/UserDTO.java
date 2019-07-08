@@ -46,7 +46,7 @@ public class UserDTO {
     /**
      * 性别
      */
-    private Sex gender;
+    private String gender;
     /**
      * 出生年月
      */
@@ -74,9 +74,9 @@ public class UserDTO {
     /**
      * 认证状态[屏蔽/实名/未实名/黑名单]
      */
-    private UserStatus state;
+    private String state;
     /**
      * 注册时间
      */
-    private Date registerTime;
+    private String registerTime;
 }
