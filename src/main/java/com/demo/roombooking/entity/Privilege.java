@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +23,6 @@ public class Privilege {
     private String name;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "privilege", targetEntity = User.class)
-    private User user;
+    @OneToMany(mappedBy = "privilege", targetEntity = User.class)
+    private List<User> users;
 }
