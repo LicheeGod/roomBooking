@@ -2,9 +2,6 @@ package com.demo.roombooking.controller;
 
 
 import com.demo.roombooking.common.resp.JsonResponse;
-import com.demo.roombooking.entity.Order;
-import com.demo.roombooking.entity.Room;
-import com.demo.roombooking.entity.User;
 import com.demo.roombooking.entity.dto.OrderDTO;
 import com.demo.roombooking.entity.dto.OrderQueryDTO;
 import com.demo.roombooking.entity.enums.OrderStatus;
@@ -41,29 +38,28 @@ public class OrderController {
 
     /**
      * 订单星级等回复
-     * @param code
-     * @param rate
-     * @param remark
+     * @param orderDTO
      * @return
      */
-    @RequestMapping("/order/updateInfo")
-    public JsonResponse updateOrder(@RequestParam("code") String code,
-                                    @RequestParam("rate") Integer rate,
-                                    @RequestParam("remark") String remark) {
-        return new JsonResponse(JsonResponse.SUCCESS, orderService.operateRate(code, rate, remark));
+    @RequestMapping("/order/operateRate")
+    public JsonResponse updateOrder(@RequestBody OrderDTO orderDTO) {
+//                                    @RequestParam("code") String code,
+//                                    @RequestParam("rate") Integer rate,
+//                                    @RequestParam("remark") String remark
+        return new JsonResponse(JsonResponse.SUCCESS, orderService.operateRate(orderDTO.getCode(), orderDTO.getRate(), orderDTO.getRemark()));
     }
 
     /**
      * 修改订单状态
-     * @param code
-     * @param status
+     * @param orderDTO
      * @return
      */
-    @RequestMapping("/order/operate")
-    public JsonResponse operateOrder(@RequestParam("code") String code,
-                                     @RequestParam("status") String status) {
+    @RequestMapping("/order/operateStatus")
+    public JsonResponse operateOrder(@RequestBody OrderDTO orderDTO) {
+//                                     @RequestParam("code") String code,
+//                                     @RequestParam("status") String status) {
 
-        orderService.operateOrder(code, OrderStatus.valueOf(status));
+        orderService.operateOrder(orderDTO.getCode(), OrderStatus.valueOf(orderDTO.getStatus()));
 
         return new JsonResponse(JsonResponse.SUCCESS);
     }

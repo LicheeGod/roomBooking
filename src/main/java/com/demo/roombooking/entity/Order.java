@@ -3,6 +3,7 @@ package com.demo.roombooking.entity;
 import com.demo.roombooking.entity.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -66,13 +67,14 @@ public class Order {
     /**
      * 级联关联用户
      */
+    @JsonIgnore
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private User user;
     /**
      * 级联关联客房
      */
     @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "t_orders_rooms", joinColumns = @JoinColumn(name = "order_code", referencedColumnName = "code"), inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"))
     private List<Room> rooms;
 

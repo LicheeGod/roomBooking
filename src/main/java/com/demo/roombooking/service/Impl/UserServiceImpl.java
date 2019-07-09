@@ -6,7 +6,6 @@ import com.demo.roombooking.dao.PrivilegeRepository;
 import com.demo.roombooking.dao.UserRepository;
 import com.demo.roombooking.entity.User;
 import com.demo.roombooking.entity.dto.UserQueryDTO;
-import com.demo.roombooking.entity.enums.Sex;
 import com.demo.roombooking.entity.enums.UserStatus;
 import com.demo.roombooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

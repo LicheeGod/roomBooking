@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDTO {
     /**
-     * 生成32位随机字符串的主键
+     * 订单号
      */
     private String code;
     /**
@@ -44,4 +44,8 @@ public class OrderDTO {
      * 房间号
      */
     private List<String> roomNos;
+    /**
+     * 订单状态
+     */
+    private String status;
 }
