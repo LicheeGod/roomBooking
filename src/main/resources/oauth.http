@@ -135,7 +135,7 @@ POST http://localhost:8800/roombooking/order/operateRate
 Content-Type: application/json
 
 {
-  "code": "402809816bd3eaa6016bd3ed143e0000",
+  "code": "20191562638301013537",
   "rate": "5",
   "remark": "五星好评没得说."
 }
@@ -145,7 +145,7 @@ POST http://localhost:8800/roombooking/order/operateStatus
 Content-Type: application/json
 
 {
-  "code": "402809816bd3eaa6016bd3ed143e0000",
+  "code": "20191562638301013537",
   "status": "ENTER"
 }
 

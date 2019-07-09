@@ -43,9 +43,7 @@ public class OrderController {
      */
     @RequestMapping("/order/operateRate")
     public JsonResponse updateOrder(@RequestBody OrderDTO orderDTO) {
-//                                    @RequestParam("code") String code,
-//                                    @RequestParam("rate") Integer rate,
-//                                    @RequestParam("remark") String remark
+
         return new JsonResponse(JsonResponse.SUCCESS, orderService.operateRate(orderDTO.getCode(), orderDTO.getRate(), orderDTO.getRemark()));
     }
 
@@ -56,8 +54,6 @@ public class OrderController {
      */
     @RequestMapping("/order/operateStatus")
     public JsonResponse operateOrder(@RequestBody OrderDTO orderDTO) {
-//                                     @RequestParam("code") String code,
-//                                     @RequestParam("status") String status) {
 
         orderService.operateOrder(orderDTO.getCode(), OrderStatus.valueOf(orderDTO.getStatus()));
 

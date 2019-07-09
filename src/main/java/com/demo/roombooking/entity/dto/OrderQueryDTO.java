@@ -26,7 +26,7 @@ public class OrderQueryDTO {
     /**
      * 订单号
      */
-//    private String code;
+    private String code;
     /**
      * 订单生成时间段
      */
@@ -53,11 +53,11 @@ public class OrderQueryDTO {
 
             List<Predicate> predicates = new ArrayList<>();
 
-//            if (!StringUtils.isEmpty(this.getCode())) {
-//                predicates.add(
-//                        criteriaBuilder.equal(
-//                                root.get("code"), this.getCode()));
-//            }
+            if (!StringUtils.isEmpty(this.getCode())) {
+                predicates.add(
+                        criteriaBuilder.like(
+                                root.get("code"), "%" + this.getCode() + "%"));
+            }
             if (!StringUtils.isEmpty(this.getCreateTimes().get(0)) && !StringUtils.isEmpty(this.getCreateTimes().get(1))) {
                 try {
                     predicates.add(

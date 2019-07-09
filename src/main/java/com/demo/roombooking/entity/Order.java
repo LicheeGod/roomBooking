@@ -1,5 +1,6 @@
 package com.demo.roombooking.entity;
 
+import com.demo.roombooking.common.util.CodeUtil;
 import com.demo.roombooking.entity.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,9 +26,11 @@ public class Order {
      * 生成32位随机字符串的主键
      */
     @Id
-    @GenericGenerator(name = "user-uuid", strategy = "uuid")
-    @GeneratedValue(generator = "user-uuid")
-    @Column(name = "code", length = 32)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    /**
+     * 随机生成的订单号
+     */
     private String code;
     /**
      * 经手人
@@ -75,13 +78,14 @@ public class Order {
      */
     @JsonIgnore
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinTable(name = "t_orders_rooms", joinColumns = @JoinColumn(name = "order_code", referencedColumnName = "code"), inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"))
+    @JoinTable(name = "t_orders_rooms", joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"))
     private List<Room> rooms;
 
     @PrePersist
     private void prePersist() {
         this.createTime = new Date();
         this.status = OrderStatus.UNENTER;
+        this.code = CodeUtil.getCode();
     }
 
 }

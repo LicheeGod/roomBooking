@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-//    private HashMap<String, String> storage = new HashMap<>();
-
     private PrivilegeRepository privilegeRepository;
     private UserRepository userRepository;
 
@@ -38,7 +36,6 @@ public class UserServiceImpl implements UserService {
         if (user.getPassword().equals(password)) {
 
             // 模拟token令牌
-//            storage.put(userName, Token.getToken());
 
             return user;
         }
@@ -48,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void exit(String userName) {
-//        storage.remove(userName);
+
     }
 
     /**

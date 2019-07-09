@@ -1,15 +1,11 @@
 package com.demo.roombooking.common.util;
 
-import lombok.Data;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-@Data
-public class Token {
-
-    public static String getToken() {
+public class CodeUtil {
+    public static String getCode() {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
         Random random = new Random();
