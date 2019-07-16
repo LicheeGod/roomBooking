@@ -3,13 +3,13 @@ POST http://localhost:8800/roombooking/room/insert
 Content-Type: application/json
 
 {
-  "roomNo": "201",
-  "price": "49",
-  "people": "2",
-  "name": "情趣双人房",
+  "roomNo": "307",
+  "price": "149",
+  "people": "4",
+  "name": "超豪华总统套房",
   "roomImgUrl": ["sz.jpg"],
   "introduction": "没有介绍",
-  "type": "DOUBLE"
+  "type": "suit"
 }
 
 ###修改客房
@@ -57,13 +57,13 @@ POST http://localhost:8800/roombooking/user/insert
 Content-Type: application/json
 
 {
-  "userName": "user",
+  "userName": "licheez",
   "password": "123456",
   "email": "user@163.com"
 }
 
 ###用户登陆
-POST http://localhost:8800/roombooking/user/login?userName=user&password=123456
+POST http://localhost:8800/roombooking/user/login?userName=lichee&password=123456
 Content-Type: application/json
 
 ###注销
@@ -111,7 +111,7 @@ Content-Type: application/json
   "registerTimes": [""],
   "pageBuilder": {
     "pageNum": "1",
-    "pageSize": "10"
+    "pageSize": "3"
   }
 }
 

@@ -29,6 +29,7 @@ public class UserController {
      */
     @PostMapping("/user/login")
     public JsonResponse login(@RequestParam("userName") String userName, @RequestParam("password") String password) {
+        System.out.println("login_ing");
         return new JsonResponse(JsonResponse.SUCCESS, userService.login(userName, password));
     }
 
